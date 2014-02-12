@@ -41,11 +41,20 @@ route.via([53.143752,-1.194104]);
 // Where we want to end up
 route.end([53.909293,-1.596543]);
 
-// We can fetch more than on result by asking calculate
-var results = route.calculate(4);
+// Register a callback for completion
+route.on('complete',function(results){
+  // Get path data for our results.
+  console.log(results.best().geoJson()); 
+  console.log(results.nth(3).geoJson()); 
+});
 
-// Get path data for our results.
-console.log(results.best().geoJson()); 
-console.log(results.nth(3).geoJson()); 
+// Register a callback for fails
+route.on('fail',function(results){
+  console.log('No route could be round');
+});
+
+
+// Calculate our route
+route.calculate();
 
 ```
