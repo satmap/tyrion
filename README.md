@@ -1,5 +1,5 @@
 # Tyrion
-Tyrion is a routing engine in pure JavaScript that runs a graph search to find the optimal path between two nodes. Tyrion can parse either SVG data or OSM XML into a grid to be searched. It also comes prebuilt with some heurstic models to help imporve location based graph searching.
+Tyrion is a routing engine in pure JavaScript that runs a graph search to find the optimal path between two nodes. Tyrion can parse either SVG data or OSM XML into a grid to be searched. It also comes prebuilt with some heuristic models to help imporve location based graph searching.
 
 By default Tyrion only returns path data for the route.
 
@@ -62,6 +62,9 @@ route.calculate();
 
 ```
 
+# Parsing
+When we build our search we build we take in to account the route settings and skew value at our location in the grid, and example of this is, if we're a walking route we will favour routes that stay in our 'enviroment' over those heading towards a road, so in a walking grid `paths` are given a higher value that `roads` likewise if we ask to avoid marshes they will be set to 0 (see avoidFloor) in the grid.
+
 # API
 A full api breakdown for Tyrion
 
@@ -83,7 +86,7 @@ allows you to set conditions for the route, currently supported are,
 ```
 
 ## .avoid()
-our heurstic models can set walls in the graph for certain geographical features.
+our parser models can set walls in the graph for certain geographical features.
 
 ```js
 	route.avoid('motorways'); // won't route down motorways, if you set is to walking/cycling this will be set automatically.
@@ -101,6 +104,14 @@ our heurstic models can set walls in the graph for certain geographical features
 	// All `avoid` settings can be unset using `allow`
 	route.allow('water');
 ```
+
+If you want to not fully avoid a terrain type but simply favour routes that do not pass through them you can set avoidFloor to a value higher than 0. avoidFloors act as a multiplier value for our base,``base = (((floor+floor)*2)+1)`` so routes avoiding them are heavily favoured but in general you are likely to get less 'impossible' routes. 
+
+```js
+	route.avoidFloor(1);
+```
+
+at a later date we will provide independent avoidFloor values for each terrain type.
 
 ## .on(event, callback)
 
