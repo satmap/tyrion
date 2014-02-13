@@ -60,7 +60,7 @@ route.on('fail',function(results){
 // Calculate our route
 route.calculate();
 
-```js
+```
 
 # API
 A full api breakdown for Tyrion
