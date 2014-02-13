@@ -58,3 +58,50 @@ route.on('fail',function(results){
 route.calculate();
 
 ```
+
+# API
+A full api breakdown for Tyrion
+
+## .data(file,{options})
+This is the data file to be parsed, you can provide an SVG, OSM or OS data. The larger this dataset the longer the ``calculate()`` will take. options allows for you to set a ``range`` with in the data and a ``projection`` for the data. 
+
+## .is()
+allows you to set conditions for the route, currently supported are,
+
+```
+	route.is('walking'); // Calculate walking routes
+	route.is('cycling'); // Calculate cycling routes
+	route.is('driving'); // Calculate driving routes
+	
+	route.is('daytime'); // We might have diffrent routes at night
+	
+	// All `is` settings can be unset using `isnt`
+	route.isnt('daytime'); // would tell the engine it's nightime
+```
+
+## .avoid()
+our heurstic models can set walls in the graph for certain geographical features.
+
+```
+	route.avoid('motorways'); // won't route down motorways, if you set is to walking/cycling this will be set automatically.
+	route.avoid('tolls'); // again only used when in 'driving' mode
+	
+	// OS map sets allow us to avoid types of terrain
+	route.avoid('rocks'); // rocky landscapes and cliffs
+	route.avoid('trees'); // forests
+	route.avoid('water'); // streams and rivers
+	route.avoid('marsh'); // marshland
+	
+	// All `avoid` settings can be unset using `allow`
+	route.allow('water');
+```
+
+## .on(event, callback)
+
+events are, 
+
+``complete`` for when a calculation has completed.
+``fail`` for when a calculation fails.
+``progress`` a periodical update from the graph search.
+``impossible`` if a graph completes but no path is found, this event will trigger.
+``change`` if any of the settings for this instance change this event if fired.
