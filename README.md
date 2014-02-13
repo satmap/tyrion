@@ -95,11 +95,20 @@ our heurstic models can set walls in the graph for certain geographical features
 	route.avoid('water'); // streams and rivers
 	route.avoid('marsh'); // marshland
 	
+	// OS maps make at attempt to 'infer' unknown paths. We might not want this.
+	route.avoid('inferred');
+	
 	// All `avoid` settings can be unset using `allow`
 	route.allow('water');
 ```
 
 ## .on(event, callback)
+
+```js
+	route.on('impossible',function(){
+		console.log('No path could be found through this grid.');
+	});
+```
 
 events are, 
 
