@@ -10,9 +10,12 @@ route.data('./gb.svg');
 route.begin(51.344365,0.733463]);
 route.end([53.909293,-1.596543]);
 
-var results = route.calculate();
+route.on('complete',function(results){
+	console.log(results.geoJson()); 
+});
 
-console.log(results.geoJson()); 
+route.calculate();
+
 ```
 
 a kitchen skin example,
@@ -57,7 +60,7 @@ route.on('fail',function(results){
 // Calculate our route
 route.calculate();
 
-```
+```js
 
 # API
 A full api breakdown for Tyrion
@@ -68,7 +71,7 @@ This is the data file to be parsed, you can provide an SVG, OSM or OS data. The 
 ## .is()
 allows you to set conditions for the route, currently supported are,
 
-```
+```js
 	route.is('walking'); // Calculate walking routes
 	route.is('cycling'); // Calculate cycling routes
 	route.is('driving'); // Calculate driving routes
@@ -82,7 +85,7 @@ allows you to set conditions for the route, currently supported are,
 ## .avoid()
 our heurstic models can set walls in the graph for certain geographical features.
 
-```
+```js
 	route.avoid('motorways'); // won't route down motorways, if you set is to walking/cycling this will be set automatically.
 	route.avoid('tolls'); // again only used when in 'driving' mode
 	
@@ -101,7 +104,11 @@ our heurstic models can set walls in the graph for certain geographical features
 events are, 
 
 ``complete`` for when a calculation has completed.
+
 ``fail`` for when a calculation fails.
+
 ``progress`` a periodical update from the graph search.
+
 ``impossible`` if a graph completes but no path is found, this event will trigger.
+
 ``change`` if any of the settings for this instance change this event if fired.
