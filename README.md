@@ -1,7 +1,5 @@
 # Tyrion
-Tyrion is a routing engine in pure JavaScript that runs a graph search to find the optimal path between two nodes. Tyrion can parse either SVG data or OSM XML into a grid to be searched. It also comes prebuilt with some heuristic models to help imporve location based graph searching.
-
-By default Tyrion only returns path data for the route.
+Tyrion is a routing engine in pure JavaScript that runs a graph search to find the optimal path between two nodes. Tyrion can parse either SVG data or OSM XML into a grid to be searched. It also comes prebuilt with some heuristic like models to help imporve location based graph searching.
 
 ```js
 var route = new Tyrion();
@@ -63,13 +61,13 @@ route.calculate();
 ```
 
 # Parsing
-When we build our search we build we take in to account the route settings and skew value at our location in the grid, and example of this is, if we're a walking route we will favour routes that stay in our 'enviroment' over those heading towards a road, so in a walking grid `paths` are given a higher value that `roads` likewise if we ask to avoid marshes they will be set to 0 (see avoidFloor) in the grid.
+When we build our search graph, we take in to account the route settings and skew the values at important locations in the grid, and example of this is, if we're a walking route we will favour routes that stay in our 'environment' over those heading towards a road, so in a walking grid `paths` are given a higher value than `roads` likewise if we ask to avoid marshes they will be set to 0 (or see avoidFloor) in the grid.
 
 # API
 A full api breakdown for Tyrion
 
 ## .data(file,{options})
-This is the data file to be parsed, you can provide an SVG, OSM or OS data. The larger this dataset the longer the ``calculate()`` will take. options allows for you to set a ``range`` with in the data and a ``projection`` for the data. 
+This is the data file to be parsed, you can provide a SVG, OSM or OS data. The larger this dataset the longer the ``calculate()`` will take. options allows for you to set a ``range`` with in the data and a ``projection`` for the data. 
 
 ## .is()
 allows you to set conditions for the route, currently supported are,
