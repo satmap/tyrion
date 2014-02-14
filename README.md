@@ -73,50 +73,52 @@ This is the data file to be parsed, you can provide a SVG, OSM or OS data. The l
 allows you to set conditions for the route, currently supported are,
 
 ```js
-	route.is('walking'); // Calculate walking routes
-	route.is('cycling'); // Calculate cycling routes
-	route.is('driving'); // Calculate driving routes
-	
-	route.is('daytime'); // We might have diffrent routes at night
-	
-	// All `is` settings can be unset using `isnt`
-	route.isnt('daytime'); // would tell the engine it's nightime
+route.is('walking'); // Calculate walking routes
+route.is('cycling'); // Calculate cycling routes
+route.is('driving'); // Calculate driving routes
+
+route.is('daytime'); // We might have diffrent routes at night
+
+// All `is` settings can be unset using `isnt`
+route.isnt('daytime'); // would tell the engine it's nightime
 ```
 
 ## .avoid()
 our parser models can set walls in the graph for certain geographical features.
 
 ```js
-	route.avoid('motorways'); // won't route down motorways, if you set is to walking/cycling this will be set automatically.
-	route.avoid('tolls'); // again only used when in 'driving' mode
-	
-	// OS map sets allow us to avoid types of terrain
-	route.avoid('rocks'); // rocky landscapes and cliffs
-	route.avoid('trees'); // forests
-	route.avoid('water'); // streams and rivers
-	route.avoid('marsh'); // marshland
-	
-	// OS maps make at attempt to 'infer' unknown paths. We might not want this.
-	route.avoid('inferred');
-	
-	// All `avoid` settings can be unset using `allow`
-	route.allow('water');
+route.avoid('motorways'); // won't route down motorways, if you set is to walking/cycling this will be set automatically.
+route.avoid('tolls'); // again only used when in 'driving' mode
+
+// OS map sets allow us to avoid types of terrain
+route.avoid('rocks'); // rocky landscapes and cliffs
+route.avoid('trees'); // forests
+route.avoid('water'); // streams and rivers
+route.avoid('marsh'); // marshland
+
+// OS maps make at attempt to 'infer' unknown paths. We might not want this.
+route.avoid('inferred');
+
+// All `avoid` settings can be unset using `allow`
+route.allow('water');
 ```
 
 If you want to not fully avoid a terrain type but simply favour routes that do not pass through them you can set avoidFloor to a value higher than 0. avoidFloors act as a multiplier value for our base,``base = (((floor+floor)*2)+1)`` so routes avoiding them are heavily favoured but in general you are likely to get less 'impossible' routes. 
 
 ```js
-	route.avoidFloor(1);
+route.avoidFloor(1);
 ```
 
 at a later date we will provide independent avoidFloor values for each terrain type.
 
+Setting your avoidFloor to 0 is DRAMATICALLY increase search time as almost all routes will be seen by the script as viable. 
+
 ## .on(event, callback)
 
 ```js
-	route.on('impossible',function(){
-		console.log('No path could be found through this grid.');
-	});
+route.on('impossible',function(){
+	console.log('No path could be found through this grid.');
+});
 ```
 
 events are, 
