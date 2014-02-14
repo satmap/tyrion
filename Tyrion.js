@@ -67,6 +67,7 @@ var Tyrion = function(){
 		}
 	}
 	
+	// This is a great circle straight line calculation for begin to end in KM
 	this.haversine = function(){
 	
 		var radius = 6371;
@@ -97,15 +98,15 @@ var Tyrion = function(){
 		if(ext == 'svg'){
 			this.options.data.file = data;
 			this.options.data.format = 'svg';
-			this.parser = new SVGParse();
+			this.parser = new SVGParse(this);
 		} else if(ext == 'osm'){
 			this.options.data.file = data;
 			this.options.data.format = 'osm';
-			this.parser = new OSMParse();
+			this.parser = new OSMParse(this);
 		} else if(ext == 'os'){
 			this.options.data.file = data;
 			this.options.data.format = 'os';
-			this.parser = new OSParse();
+			this.parser = new OSParse(this);
 		} else {
 			throw new Error('the provided file format is not supported');
 		}
@@ -191,7 +192,7 @@ var Tyrion = function(){
 		}
 	}
 	
-	// Set a route holder
+	// Set a route holder and our route functions
 	this.route = {};
 	this.route.begin = [];
 	this.route.via = [];
@@ -213,25 +214,41 @@ var Tyrion = function(){
 		}
 	}
 	
+	
+	// Actually calculate the route.
+	//
+	// This function will be CRAZY, memory leaks will be a big part of our life. Our goal will be to get the data set
+	// Read: http://www.ibm.com/developerworks/web/library/wa-memleak/
+	//
+	// Load data to graph - with all conditions.
+	// Astar the graph
+	// Change our results to TyrionResult sets.
+	// If we're empty run ``incomplete``
+	// If we have routes trigger our ``complete`` and pass our results.
 	this.calculate = function(){
 		var res = new TyrionResult();
 		this.trigger('complete',res);
 	}
 }
 
-var TyrionResult = function(){
+var TyrionResults = function(res){
+
+}
+
+var TyrionResult = function(res){
+	this._res = [];
 	this.best = function(){ return this; }
-	this.nth = function(){}
+	this.nth = function(n){ return this; }
 	
 	this.gpx = function(){}
-	this.geoJSON = function(){ return "my cool geojson"; }
+	this.geoJson = function(){ return "my cool geojson"; }
 }
 
 // These will parse a data set into a weighted graph, then astar will search.
 // Avoids: will set walls in their location, so on pase lat and lng, feature ranges will be set to 0 in their position in the graph
 var OSMParse = function(){}
-var SVGParse = function(){}
-var OSParse = function(){}
+var SVGParse = function(parent){ this.parent = parent; }
+var OSParse = function(parent){ this.parent = parent; }
 
 // javascript-astar
 // http://github.com/bgrins/javascript-astar

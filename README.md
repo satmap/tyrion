@@ -3,6 +3,14 @@
 
 Tyrion is a routing engine in pure JavaScript that runs a graph search to find the optimal path between two nodes. Tyrion can parse either SVG data or OSM XML into a grid to be searched. It also comes prebuilt with some heuristic like models to help imporve location based graph searching.
 
+# Problems
+- Huge memory leaks on BinaryHeap'ing
+- More leaks when calling XML using XMLHttpRequest
+- inspector crashing with files over 15mb
+- V8 memory limit?
+
+# Examples
+
 ```js
 var route = new Tyrion();
 route.data('./gb.svg');
