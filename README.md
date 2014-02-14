@@ -93,7 +93,7 @@ route.radius('auto'); // haversine
 
 ```
 
-after this our radius would be 330.65 (325km for the haversine and the 5km buffer) but I've used a very long distance for these demo locations because I wanted funny place names, in relative the radius would be more like 20/30km for most routes.
+after this our radius would be 330.65 (325km for the haversine and the 5km buffer) but I've used a very long distance for these demo locations because I wanted funny place names, in reality the radius would be more like 20/30km for most routes. You could edit the ``haversineBuffer`` in the code if you wanted a more generous buffer, as great circle distances are not perfect I wouldn't advise going lower than 5km for a buffer or you'll increase the likelihood of impossible routes.
 
 ## .is()
 allows you to set conditions for the route, currently supported are,

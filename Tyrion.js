@@ -53,6 +53,8 @@ var Tyrion = function(){
 	
 	// Because we're  ashort distance most of the time, reduce the data to a radius around us.
 	this.options.data.radius = 25;
+	this.options.data.haversineBuffer = 5;
+	
 	this.radius = function(radius){
 		if(radius == 'auto'){
 			// make this haversine
@@ -81,7 +83,7 @@ var Tyrion = function(){
 		var a = Math.sin(dla/2) * Math.sin(dla/2) + Math.sin(dlo/2) * Math.sin(dlo/2) * Math.cos(lat1) * Math.cos(lat2); 
 		var b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 		var c = radius * b;
-		return c > 0 ? c + 5 : this.options.data.radius;	
+		return c > 0 ? c + this.options.data.haversineBuffer : this.options.data.radius;	
 	}
 	
 	// Start and empty parser
