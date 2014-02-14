@@ -33,6 +33,7 @@ var Tyrion = function(){
 			this.options.avoidFloor = value;
 			// double our floor, and the * it by two...add 1 in value is 1. 
 			this.options.wallBase = (((value+value)*2)+1);
+			this.trigger('change');
 		}
 	}
 	
@@ -41,6 +42,7 @@ var Tyrion = function(){
 	this.difficulty = function(value){
 		if(value >= 0){ 
 			this.options.ourDifficulty = value;
+			this.trigger('change');
 		}
 	}
 	
@@ -49,13 +51,24 @@ var Tyrion = function(){
 	this.options.data.file = 0;
 	this.options.data.format = 0;
 	
+	// Because we're short distance most of the time, reduce the data to a radius around us.
+	this.options.data.radius = 25;
+	this.radius = function(radius){
+		if(radius == 'auto'){
+			// make this haversine
+			this.options.data.radius = 25 + 5;
+		} else if(radius > 0){
+			this.options.radius = radius;
+			this.trigger('change');
+		}
+	}
+	
 	// Start and empty parser
 	this.parser = {};
 	
 	// Our 'data functions'
-	this.data = function(data, options){
+	this.data = function(data){
 		// make sure its a file
-		var options = options || {};
 		var parts = data.split('.');
 		var ext = parts.pop();
 		if(ext == 'svg'){

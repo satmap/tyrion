@@ -25,6 +25,9 @@ a kitchen skin example,
 var route = new Tyrion();
 route.data('./gb.svg');
 
+// Set a radius for our data
+route.radius(25);
+
 // We can pass some conditions to the calculation
 route.is('walking');
 route.is('offroad');
@@ -70,6 +73,19 @@ A full api breakdown for Tyrion
 
 ## .data(file)
 This is the data file to be parsed, you can provide a SVG, OSM or OS data. The larger this dataset the longer the ``calculate()`` will take.
+
+## .radius(km)
+You can pass a distance in km from your `start` location as your search radius and your data set will be reduces to just that radius. If your `end` is outside of your radius all routes will return impossible.
+
+```js
+route.radius(25); // 25km from start location
+```
+
+you may also pass `auto` as the value for radius and we will calculate the haversine distance from `start` to `end` and a buffer for 5km. You can only call auto after your called ``.begin`` and ``.end`` as we need those values to calculate on.
+
+```js
+route.radius('auto'); // haversine
+```
 
 ## .is()
 allows you to set conditions for the route, currently supported are,
