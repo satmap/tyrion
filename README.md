@@ -90,6 +90,9 @@ our parser models can set walls in the graph for certain geographical features.
 route.avoid('motorways'); // won't route down motorways, if you set is to walking/cycling this will be set automatically.
 route.avoid('tolls'); // again only used when in 'driving' mode
 
+// We can pass a lat, lng to avoid also.
+route.avoid([lat,lng]);
+
 // OS map sets allow us to avoid types of terrain
 route.avoid('rocks'); // rocky landscapes and cliffs
 route.avoid('trees'); // forests
@@ -112,6 +115,13 @@ route.avoidFloor(1);
 at a later date we will provide independent avoidFloor values for each terrain type.
 
 Setting your avoidFloor to 0 is DRAMATICALLY increase search time as almost all routes will be seen by the script as viable. 
+
+## .difficulty(value)
+OS tracks and trails come with a 'difficulty' based on the types of terrain they pass through and their elevation. You can use our engine to generat routes with given difficulty levels, the higher this number the more difficult the route will be.
+
+```js
+route.difficulty(10); // very hard
+```
 
 ## .on(event, callback)
 
