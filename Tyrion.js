@@ -53,8 +53,9 @@ var Tyrion = function(){
 	this.parser = {};
 	
 	// Our 'data functions'
-	this.data = function(data){
+	this.data = function(data, options){
 		// make sure its a file
+		var options = options || {};
 		var parts = data.split('.');
 		var ext = parts.pop();
 		if(ext == 'svg'){
@@ -78,7 +79,7 @@ var Tyrion = function(){
 	this.events = ['complete','progress','fail','change','impossible'];
 	this._events = [];
 	this.on = function(event, callback){
-		if(this.events.indexOf(event) > 0){
+		if(this.events.indexOf(event) >= 0){
 			if(typeof this._events[event] == 'undefined'){
 				this._events[event] = callback;
 			} else if(typeof this._events[event] == 'object'){
@@ -88,19 +89,19 @@ var Tyrion = function(){
 				this._events[event] = [];
 				this._events[event].push(current);
 				this._events[event].push(callback);
-			} else { }
+			} else { throw new Error("Event "+event+" was not found"); }
 		}
 	}
 	
-	this.trigger = function(event,arguments){
-		if(!arguments){ arguments = 'null'; }
-		if(this.events.indexOf(event) > 0){
+	this.trigger = function(event,args){
+		if(!args){ args = 'null'; }
+		if(this.events.indexOf(event) >= 0){
 			if(typeof this._events[event] == 'function'){
-				this._events[event]();
+				this._events[event](args);
 			} else if(typeof this._events[event] == 'object' && this._events[event] instanceof Array){
 				for(callback in this._events[event]){
 					if(typeof this._events[event][callback] == 'function'){
-						this._events[event][callback]();
+						this._events[event][callback](args);
 					}
 				}
 			} else { }
@@ -154,18 +155,40 @@ var Tyrion = function(){
 		}
 	}
 	
-	this.begin = function(){}
-	this.via = function(){}
-	this.end = function(){}
-	this.calculate = function(){}
+	// Set a route holder
+	this.route = {};
+	this.route.begin = [];
+	this.route.via = [];
+	this.route.end = [];
+	
+	this.begin = function(loc){
+		if(typeof loc == 'object' && loc.length == 2){
+			this.route.begin = loc;
+		}
+	}
+	this.via = function(loc){
+		if(typeof loc == 'object' && loc.length == 2){
+			this.route.via.push(loc);
+		}
+	}
+	this.end = function(loc){
+		if(typeof loc == 'object' && loc.length == 2){
+			this.route.end = loc;
+		}
+	}
+	
+	this.calculate = function(){
+		var res = new TyrionResult();
+		this.trigger('complete',res);
+	}
 }
 
 var TyrionResult = function(){
-	this.best = function(){}
+	this.best = function(){ return this; }
 	this.nth = function(){}
 	
-	this.gpx() = function(){}
-	this.geoJSON = function(){}
+	this.gpx = function(){}
+	this.geoJSON = function(){ return "my cool geojson"; }
 }
 
 // These will parse a data set into a weighted graph, then astar will search.

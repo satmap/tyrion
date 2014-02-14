@@ -7,7 +7,7 @@ Tyrion is a routing engine in pure JavaScript that runs a graph search to find t
 var route = new Tyrion();
 route.data('./gb.svg');
 
-route.begin(51.344365,0.733463]);
+route.begin([51.344365,0.733463]);
 route.end([53.909293,-1.596543]);
 
 route.on('complete',function(results){
@@ -36,7 +36,7 @@ route.avoid('motorways');
 route.avoid([51.482906,-0.177665]);
 
 // Enter our start point
-route.begin(51.344365,0.733463]);
+route.begin([51.344365,0.733463]);
 
 // If we need to we can add a via
 route.via([53.143752,-1.194104]);
@@ -68,8 +68,8 @@ When we build our search graph, we take in to account the route settings and ske
 # API
 A full api breakdown for Tyrion
 
-## .data(file,{options})
-This is the data file to be parsed, you can provide a SVG, OSM or OS data. The larger this dataset the longer the ``calculate()`` will take. options allows for you to set a ``range`` with in the data and a ``projection`` for the data. 
+## .data(file)
+This is the data file to be parsed, you can provide a SVG, OSM or OS data. The larger this dataset the longer the ``calculate()`` will take.
 
 ## .is()
 allows you to set conditions for the route, currently supported are,
@@ -116,7 +116,7 @@ route.avoidFloor(1);
 
 at a later date we will provide independent avoidFloor values for each terrain type.
 
-Setting your avoidFloor to 0 is DRAMATICALLY increase search time as almost all routes will be seen by the script as viable. 
+Setting your avoidFloor to > 0 will DRAMATICALLY increase search time as almost all routes will be seen by the script as viable. 
 
 ## .difficulty(value)
 OS tracks and trails come with a 'difficulty' based on the types of terrain they pass through and their elevation. You can use our engine to generat routes with given difficulty levels, the higher this number the more difficult the route will be.
