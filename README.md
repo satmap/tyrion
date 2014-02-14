@@ -1,4 +1,6 @@
 # Tyrion
+**This code is chnaging every day, it doesn't work yet. Only pull/clone/fork if you're one of our developers**
+
 Tyrion is a routing engine in pure JavaScript that runs a graph search to find the optimal path between two nodes. Tyrion can parse either SVG data or OSM XML into a grid to be searched. It also comes prebuilt with some heuristic like models to help imporve location based graph searching.
 
 ```js
