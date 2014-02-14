@@ -51,16 +51,37 @@ var Tyrion = function(){
 	this.options.data.file = 0;
 	this.options.data.format = 0;
 	
-	// Because we're short distance most of the time, reduce the data to a radius around us.
+	// Because we're  ashort distance most of the time, reduce the data to a radius around us.
 	this.options.data.radius = 25;
 	this.radius = function(radius){
 		if(radius == 'auto'){
 			// make this haversine
-			this.options.data.radius = 25 + 5;
+			if(this.route.begin.length > 0 && this.route.end.length > 0){
+				this.options.data.radius = this.haversine();
+			}
 		} else if(radius > 0){
 			this.options.radius = radius;
 			this.trigger('change');
 		}
+	}
+	
+	this.haversine = function(){
+	
+		var radius = 6371;
+		var lat1 = this.route.begin[0];
+		var lon1 = this.route.begin[1];
+		var lat2 = this.route.end[0];
+		var lon2 = this.route.end[1];
+		
+		var dla = (lat2-lat1) * Math.PI / 180;
+		var dlo = (lon2-lon1) * Math.PI / 180;
+		var lat1 = lat1 * Math.PI / 180;
+		var lat2 = lat2 * Math.PI / 180;
+
+		var a = Math.sin(dla/2) * Math.sin(dla/2) + Math.sin(dlo/2) * Math.sin(dlo/2) * Math.cos(lat1) * Math.cos(lat2); 
+		var b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+		var c = radius * b;
+		return c > 0 ? c + 5 : this.options.data.radius;	
 	}
 	
 	// Start and empty parser
