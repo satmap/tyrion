@@ -81,11 +81,19 @@ You can pass a distance in km from your `start` location as your search radius a
 route.radius(25); // 25km from start location
 ```
 
+
 you may also pass `auto` as the value for radius and we will calculate the haversine distance from `start` to `end` and a buffer for 5km. You can only call auto after you have called ``.begin`` and ``.end`` as we need those values to calculate on.
 
 ```js
+
+route.begin([51.344365,0.733463]);
+route.end([53.909293,-1.596543]);
+
 route.radius('auto'); // haversine
+
 ```
+
+after this our radius would be 330.65 (325km for the haversine and the 5km buffer) but I've used a very long distance for these demo locations because I wanted funny place names, in relative the radius would be more like 20/30km for most routes.
 
 ## .is()
 allows you to set conditions for the route, currently supported are,
