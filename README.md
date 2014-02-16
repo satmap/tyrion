@@ -76,6 +76,9 @@ route.calculate();
 # Parsing
 When we build our search graph, we take in to account the route settings and skew the values at important locations in the grid, and example of this is, if we're a walking route we will favour routes that stay in our 'environment' over those heading towards a road, so in a walking grid `paths` are given a higher value than `roads` likewise if we ask to avoid marshes they will be set to 0 (or see avoidFloor) in the grid.
 
+# Data Formats
+As we're using pure JS for this engine, we recommend using some pre-parse on your data to reduce the size of the set we have to work with. For example if your data set is for the WHOLE of the UK, it might be worth splitting it up into 50km squares and using a haversine to work our a rough grid area call and combine the relevant files and then pass that data into to Tyrion. This will speed up the process and reduce the likelyhood of memory problems. 
+
 # API
 A full api breakdown for Tyrion
 
