@@ -34,6 +34,8 @@ var Tyrion = function(){
 			// double our floor, and the * it by two...add 1 in value is 1. 
 			this.options.wallBase = (((value+value)*2)+1);
 			this.trigger('change');
+			
+			return this;
 		}
 	}
 	
@@ -43,6 +45,8 @@ var Tyrion = function(){
 		if(value >= 0){ 
 			this.options.ourDifficulty = value;
 			this.trigger('change');
+			
+			return this;
 		}
 	}
 	
@@ -65,6 +69,8 @@ var Tyrion = function(){
 			this.options.radius = radius;
 			this.trigger('change');
 		}
+		
+		return this;
 	}
 	
 	// This is a great circle straight line calculation for begin to end in KM
@@ -85,6 +91,40 @@ var Tyrion = function(){
 		var b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 		var c = radius * b;
 		return c > 0 ? c + this.options.data.haversineBuffer : this.options.data.radius;	
+	}
+	
+	this.addBufferToDegrees = function(lat, lon, meters){
+		var meters = meters || 50;
+		var magic_number = meters / 111111; 
+		
+		lon = lon + (magic_number * Math.cos(lat));
+		lat = lat + magic_number;
+		
+		return { lat: lat, lon: lon }
+	}
+	
+	this.removeBufferFromDegrees = function(lat, lon, meters){
+		var meters = meters || 50;
+		var magic_number = meters / 111111; 
+		
+		lon = lon - (magic_number * Math.cos(lat));
+		lat = lat - magic_number;
+		
+		return { lat: lat, lon: lon }
+	}
+	
+	this.getBounds = function(){
+		// get our haversine
+		var hav = this.haversine();
+		
+		// get bottom left lat
+		var bottom_left = this.addBufferToDegrees(this.route.begin[0],this.route.begin[1],50);
+		var top_right = this.addBufferToDegrees(this.route.end[0],this.route.end[1],50);
+		
+		var top_left = this.addBufferToDegrees(bottom_left.lat,bottom_left.lon,hav);
+		var bottom_right = this.removeBufferFromDegrees(top_right.lat,top_right.lon,hav);
+		
+		return { bottom_left: bottom_left, top_right: top_right, bottom_right: bottom_right, top_left: top_left }
 	}
 	
 	// Start and empty parser
@@ -110,6 +150,8 @@ var Tyrion = function(){
 		} else {
 			throw new Error('the provided file format is not supported');
 		}
+		
+		return this;
 	}
 	
 	// Add eventing functions
@@ -128,6 +170,8 @@ var Tyrion = function(){
 				this._events[event].push(callback);
 			} else { throw new Error("Event "+event+" was not found"); }
 		}
+		
+		return this;
 	}
 	
 	this.trigger = function(event,args){
@@ -143,6 +187,8 @@ var Tyrion = function(){
 				}
 			} else { }
 		}
+		
+		return this;
 	}
 	
 	// a function to set our is options
@@ -154,6 +200,8 @@ var Tyrion = function(){
 				this.trigger('change');
 			}
 		}
+		
+		return this;
 	}
 	// to reverse an is.
 	this.isnt = function(value){
@@ -164,6 +212,8 @@ var Tyrion = function(){
 				this.trigger('change');
 			}
 		}
+		
+		return this;
 	}
 	
 	// Add our avoid functions
@@ -179,6 +229,8 @@ var Tyrion = function(){
 				}
 			}
 		}
+		
+		return this;
 	}
 	
 	// The reverse of avoid
@@ -190,6 +242,8 @@ var Tyrion = function(){
 				this.trigger('change');
 			}
 		}
+		
+		return this;
 	}
 	
 	// Set a route holder and our route functions
@@ -202,16 +256,22 @@ var Tyrion = function(){
 		if(typeof loc == 'object' && loc.length == 2){
 			this.route.begin = loc;
 		}
+		
+		return this;
 	}
 	this.via = function(loc){
 		if(typeof loc == 'object' && loc.length == 2){
 			this.route.via.push(loc);
 		}
+		
+		return this;
 	}
 	this.end = function(loc){
 		if(typeof loc == 'object' && loc.length == 2){
 			this.route.end = loc;
 		}
+		
+		return this;
 	}
 	
 	
