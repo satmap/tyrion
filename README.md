@@ -169,7 +169,14 @@ If you want to not fully avoid a terrain type but simply favour routes that do n
 route.avoidFloor(1);
 ```
 
-at a later date we will provide independent avoidFloor values for each terrain type.
+You can pass an avoid floor for each avoid option if you would rather, this allows you to set preferences for routes. If you would like to favour cliff routes over marsh routes you can set the avoid floor higher for `marsh` routes and lower for `rocks` 
+
+```js
+route.avoid('rocks',1);
+route.avoid('marsh',10);
+```
+
+this way rock routes are FAR more likely to appear.
 
 Setting your avoidFloor to > 0 will DRAMATICALLY increase search time as almost all routes will be seen by the script as viable. 
 

@@ -28,6 +28,18 @@ var Tyrion = function(){
 	// avoidFloor and wallBase settings
 	this.options.wallBase = 1;
 	this.options.avoidFloor = 0;
+	
+	// addAvoidFloors per avoid
+	this.options.avoidFloors = {};
+	this.options.avoidFloors.tolls = 0;
+	this.options.avoidFloors.motorways = 0;
+	this.options.avoidFloors.narrow = 0;
+	this.options.avoidFloors.water = 0;
+	this.options.avoidFloors.trees = 0;
+	this.options.avoidFloors.rocks = 0;
+	this.options.avoidFloors.marsh = 0;
+	this.options.avoidFloors.inferred = 0;
+	
 	this.avoidFloor = function(value){
 		if(value > 0){
 			this.options.avoidFloor = value;
@@ -218,6 +230,7 @@ var Tyrion = function(){
 	
 	// Add our avoid functions
 	this.avoid = function(value){
+		var floor = arguments[1] || 0; 
 		if(typeof value == 'object' && value.length == 2){
 			this.options.avoidLocations.push(value);
 		} else {
@@ -225,6 +238,7 @@ var Tyrion = function(){
 			if(this.options['avoid'+value] !== 'undefined'){
 				if(!this.options['avoid'+value]){
 					this.options['avoid'+value] = 1;
+					if(floor){ this.options.avoidFloors[value] = floor; }
 					this.trigger('change');
 				}
 			}
